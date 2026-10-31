@@ -1,0 +1,1530 @@
+{
+  "name": "cyberark-privilege-cloud-ispss",
+  "version": "1.0.2",
+  "label": "CyberArk Privilege Cloud (ISPSS)",
+  "description": "FortiSOAR connector for CyberArk Privilege Cloud, supporting both the Identity Security Platform Shared Services (ISPSS) and Privilege Cloud Standard deployments. Manages privileged accounts, safes, credentials, users, account groups, and session recordings via the CyberArk Privilege Cloud REST API (Gen 2).",
+  "publisher": "dhaneshwar",
+  "cs_approved": false,
+  "cs_compatible": true,
+  "tags": [
+    "vault",
+    "PAM",
+    "Privilege Cloud",
+    "ISPSS",
+    "CyberArk"
+  ],
+  "category": "Vault",
+  "help_online": "",
+  "icon_small_name": "CyberArk_small.png",
+  "icon_large_name": "CyberArk_large.png",
+  "ingestion_supported": false,
+  "configuration": {
+    "fields": [
+      {
+        "title": "Server URL",
+        "name": "server_url",
+        "description": "Base URL of your CyberArk tenant. For ISPSS: https://<subdomain>.cyberark.cloud. For Standard: https://<subdomain>.privilegecloud.cyberark.com. The connector auto-detects the platform type from this URL.",
+        "type": "text",
+        "visible": true,
+        "editable": true,
+        "required": true,
+        "tooltip": "ISPSS example: https://acme.cyberark.cloud | Standard example: https://acme.privilegecloud.cyberark.com",
+        "placeholder": "https://<subdomain>.cyberark.cloud"
+      },
+      {
+        "title": "Identity Tenant URL",
+        "name": "identity_url",
+        "description": "(ISPSS only, optional) Full Identity tenant URL that serves /oauth2/platformtoken. Set this when the Identity tenant ID differs from the portal subdomain (common on ISPSS). Leave blank to auto-derive https://<subdomain>.id.cyberark.cloud.",
+        "type": "text",
+        "visible": true,
+        "editable": true,
+        "required": false,
+        "tooltip": "e.g. https://abc1234.id.cyberark.cloud",
+        "placeholder": "https://<tenant-id>.id.cyberark.cloud"
+      },
+      {
+        "title": "Privilege Cloud API URL",
+        "name": "api_url",
+        "description": "(Optional) Full Privilege Cloud (PVWA) API base URL. Set this only if the API host is not <subdomain>.privilegecloud.cyberark.cloud. Leave blank to auto-derive.",
+        "type": "text",
+        "visible": true,
+        "editable": true,
+        "required": false,
+        "tooltip": "e.g. https://acme.privilegecloud.cyberark.cloud",
+        "placeholder": "https://<subdomain>.privilegecloud.cyberark.cloud"
+      },
+      {
+        "title": "Authentication Type",
+        "name": "auth_type",
+        "description": "Authentication method. For ISPSS tenants (*.cyberark.cloud): use 'CyberArk' for interactive Identity user (username/password via StartAuthentication), or 'ServiceUser' for OAuth2 client_credentials (client_id/client_secret). For Standard tenants: CyberArk, LDAP, or RADIUS.",
+        "type": "select",
+        "visible": true,
+        "editable": true,
+        "required": true,
+        "options": [
+          "CyberArk",
+          "LDAP",
+          "RADIUS",
+          "ServiceUser"
+        ],
+        "value": "CyberArk",
+        "tooltip": "ISPSS: 'CyberArk' (Identity user) or 'ServiceUser' (OAuth2 client_credentials). Standard: 'CyberArk', 'LDAP', or 'RADIUS'."
+      },
+      {
+        "title": "Username / Client ID",
+        "name": "username",
+        "description": "For CyberArk/LDAP/RADIUS: your vault username. For ServiceUser (ISPSS): the OAuth2 client_id of the service user.",
+        "type": "text",
+        "visible": true,
+        "editable": true,
+        "required": true,
+        "tooltip": "Interactive user: username. Service user: client_id."
+      },
+      {
+        "title": "Password / Client Secret",
+        "name": "password",
+        "description": "For CyberArk/LDAP/RADIUS: your vault password. For ServiceUser (ISPSS): the OAuth2 client_secret of the service user.",
+        "type": "password",
+        "visible": true,
+        "editable": true,
+        "required": true,
+        "tooltip": "Interactive user: password. Service user: client_secret."
+      },
+      {
+        "title": "Concurrent Session",
+        "name": "concurrent_session",
+        "description": "Enable concurrent sessions. When True, multiple connection sessions can be opened simultaneously (up to 300).",
+        "type": "checkbox",
+        "visible": true,
+        "editable": true,
+        "required": false,
+        "value": true,
+        "tooltip": "Set to True to allow concurrent API sessions."
+      },
+      {
+        "title": "Use As Vault",
+        "required": true,
+        "editable": true,
+        "visible": true,
+        "value": false,
+        "type": "checkbox",
+        "name": "vault",
+        "description": "Enable vault mode for credential retrieval. When enabled, configure the Safe Name below. Credentials are retrieved via the Accounts REST API (GET /PasswordVault/API/Accounts/{AccountId}/Password/Retrieve).",
+        "tooltip": "Enable vault mode for FortiSOAR credential retrieval integration.",
+        "onchange": {
+          "true": [
+            {
+              "title": "Vault Safe Name",
+              "name": "vault_safe",
+              "description": "Name of the Safe that stores the credentials for vault retrieval.",
+              "type": "text",
+              "visible": true,
+              "editable": true,
+              "required": true,
+              "tooltip": "Safe name used for vault credential lookups."
+            }
+          ],
+          "false": []
+        }
+      },
+      {
+        "title": "Verify SSL",
+        "description": "Specifies whether the SSL certificate for the server is to be verified.",
+        "name": "verify_ssl",
+        "type": "checkbox",
+        "required": false,
+        "editable": true,
+        "visible": true,
+        "value": true,
+        "tooltip": "Specifies whether the SSL certificate for the server is to be verified. By default, this is set to True."
+      }
+    ]
+  },
+  "operations": [
+    {
+      "operation": "get_account",
+      "category": "investigation",
+      "annotation": "get_account",
+      "description": "Retrieves a list of accounts from Privilege Cloud. Supports search, filtering, sorting, and pagination.",
+      "title": "Get Accounts",
+      "parameters": [
+        {
+          "title": "Search",
+          "name": "search",
+          "description": "(Optional) Keywords to search for in accounts, separated by a space.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "tooltip": "Keywords to search for in accounts.",
+          "placeholder": "e.g. Windows admin"
+        },
+        {
+          "title": "Search Type",
+          "name": "searchType",
+          "description": "(Optional) Whether to match accounts that contain or start with the search value.",
+          "type": "select",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "options": [
+            "contains",
+            "startswith"
+          ],
+          "value": "contains"
+        },
+        {
+          "title": "Filter",
+          "name": "filter",
+          "description": "(Optional) Filter expression. Use AND to combine filters.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "placeholder": "e.g. safename eq mySafe AND ModificationTime gte 0"
+        },
+        {
+          "title": "Saved Filter",
+          "name": "savedfilter",
+          "description": "(Optional) Search using a predefined saved filter.",
+          "type": "select",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "options": [
+            "Regular",
+            "Recently",
+            "New",
+            "Link",
+            "Deleted",
+            "PolicyFailures",
+            "AccessedByUsers",
+            "ModifiedByUsers",
+            "ModifiedByCPM",
+            "DisabledPasswordByUser",
+            "DisabledPasswordByCPM",
+            "ScheduledForChange",
+            "ScheduledForVerify",
+            "ScheduledForReconcile",
+            "SuccessfullyReconciled",
+            "FailedChange",
+            "FailedVerify",
+            "FailedReconcile",
+            "LockedOrNew",
+            "Locked",
+            "Favorites"
+          ]
+        },
+        {
+          "title": "Sort",
+          "name": "sort",
+          "description": "(Optional) Property to sort by, followed by asc or desc. Max 3 properties, comma-separated.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "placeholder": "e.g. userName asc"
+        },
+        {
+          "title": "Offset",
+          "name": "offset",
+          "description": "(Optional) Offset of the first account returned. Default: 0.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": 0
+        },
+        {
+          "title": "Limit",
+          "name": "limit",
+          "description": "(Optional) Maximum number of accounts to return. Default: 50, Max: 1000.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": 50
+        }
+      ],
+      "output_schema": {
+        "value": [
+          {
+            "id": "",
+            "name": "",
+            "address": "",
+            "userName": "",
+            "platformId": "",
+            "safeName": "",
+            "secretType": "",
+            "platformAccountProperties": {},
+            "secretManagement": {
+              "automaticManagementEnabled": "",
+              "status": "",
+              "lastModifiedTime": ""
+            },
+            "createdTime": ""
+          }
+        ],
+        "count": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_account_details",
+      "category": "investigation",
+      "annotation": "get_account_details",
+      "description": "Retrieves details of a specific account by its Account ID.",
+      "title": "Get Account Details",
+      "parameters": [
+        {
+          "title": "Account ID",
+          "name": "account_id",
+          "description": "The unique ID of the account to retrieve.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true,
+          "placeholder": "e.g. 25_6"
+        }
+      ],
+      "output_schema": {
+        "id": "",
+        "name": "",
+        "address": "",
+        "userName": "",
+        "platformId": "",
+        "safeName": "",
+        "secretType": "",
+        "platformAccountProperties": {},
+        "secretManagement": {},
+        "createdTime": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "retrieve_account_password",
+      "category": "investigation",
+      "annotation": "retrieve_account_password",
+      "description": "Retrieves the password or SSH key of an account identified by its Account ID. Requires Retrieve Accounts permission in the Safe.",
+      "title": "Retrieve Account Password",
+      "parameters": [
+        {
+          "title": "Account ID",
+          "name": "account_id",
+          "description": "The unique ID of the account whose password to retrieve.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Reason",
+          "name": "reason",
+          "description": "(Optional) Reason for retrieving the password.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Ticketing System Name",
+          "name": "TicketingSystemName",
+          "description": "(Optional) Name of the ticketing system.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Ticket ID",
+          "name": "TicketId",
+          "description": "(Optional) Ticket ID from the ticketing system.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Action Type",
+          "name": "ActionType",
+          "description": "(Optional) The action the password will be used for.",
+          "type": "select",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "options": [
+            "show",
+            "copy",
+            "connect"
+          ]
+        },
+        {
+          "title": "Is Use",
+          "name": "isUse",
+          "description": "(Optional) Whether the password will be used for connection via PSM.",
+          "type": "checkbox",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": false
+        }
+      ],
+      "output_schema": {
+        "password": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "add_safe",
+      "category": "miscellaneous",
+      "annotation": "add_safe",
+      "description": "Adds a new safe to the vault.",
+      "title": "Add Safe",
+      "parameters": [
+        {
+          "title": "Safe Name",
+          "name": "safeName",
+          "description": "Name of the safe to create.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "description": "(Optional) Description of the safe (max 100 characters).",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Managing CPM",
+          "name": "managingCPM",
+          "description": "(Optional) Name of the CPM user that will manage this safe.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "placeholder": "e.g. PasswordManager"
+        },
+        {
+          "title": "Number of Days Retention",
+          "name": "numberOfDaysRetention",
+          "description": "(Optional) Number of days to retain passwords. 1-3650.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Number of Versions Retention",
+          "name": "numberOfVersionsRetention",
+          "description": "(Optional) Number of password versions to retain. 1-999.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "OLAC Enabled",
+          "name": "OLACEnabled",
+          "description": "Enable Object Level Access Control.",
+          "type": "checkbox",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": false
+        }
+      ],
+      "output_schema": {
+        "safeUrlId": "",
+        "safeName": "",
+        "safeNumber": "",
+        "description": "",
+        "location": "",
+        "managingCPM": "",
+        "numberOfVersionsRetention": "",
+        "numberOfDaysRetention": "",
+        "olacEnabled": "",
+        "autoPurgeEnabled": "",
+        "creationTime": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "list_safes",
+      "category": "investigation",
+      "annotation": "list_safes",
+      "description": "Retrieves a list of safes visible to the authenticated user. Supports search and pagination.",
+      "title": "List Safes",
+      "parameters": [
+        {
+          "title": "Search",
+          "name": "search",
+          "description": "(Optional) Search string to filter safes by name.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Offset",
+          "name": "offset",
+          "description": "(Optional) Offset for pagination. Default: 0.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": 0
+        },
+        {
+          "title": "Limit",
+          "name": "limit",
+          "description": "(Optional) Maximum number of safes to return.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": 25
+        }
+      ],
+      "output_schema": {
+        "value": [
+          {
+            "safeUrlId": "",
+            "safeName": "",
+            "description": "",
+            "location": "",
+            "managingCPM": "",
+            "numberOfVersionsRetention": "",
+            "numberOfDaysRetention": ""
+          }
+        ],
+        "count": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_safe_details",
+      "category": "investigation",
+      "annotation": "safe_details",
+      "description": "Retrieves details of a specific safe by its URL ID or name.",
+      "title": "Get Safe Details",
+      "parameters": [
+        {
+          "title": "Safe URL ID",
+          "description": "The URL-safe ID of the safe (typically the safe name).",
+          "name": "safeUrlId",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "safeUrlId": "",
+        "safeName": "",
+        "safeNumber": "",
+        "description": "",
+        "location": "",
+        "managingCPM": "",
+        "numberOfVersionsRetention": "",
+        "numberOfDaysRetention": "",
+        "olacEnabled": "",
+        "autoPurgeEnabled": "",
+        "creationTime": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "update_safe",
+      "category": "miscellaneous",
+      "annotation": "update_safe",
+      "description": "Updates properties of an existing safe.",
+      "title": "Update Safe",
+      "parameters": [
+        {
+          "title": "Safe URL ID",
+          "name": "safeUrlId",
+          "description": "The URL-safe ID of the safe to update.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Safe Name",
+          "name": "safeName",
+          "description": "(Optional) New name for the safe.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "description": "(Optional) Updated description (max 100 characters).",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Managing CPM",
+          "name": "managingCPM",
+          "description": "(Optional) CPM user to manage the safe.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Number of Days Retention",
+          "name": "numberOfDaysRetention",
+          "description": "(Optional) Number of days to retain passwords.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Number of Versions Retention",
+          "name": "numberOfVersionsRetention",
+          "description": "(Optional) Number of password versions to retain.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "OLAC Enabled",
+          "name": "OLACEnabled",
+          "description": "Enable Object Level Access Control.",
+          "type": "checkbox",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": false
+        }
+      ],
+      "output_schema": {
+        "safeUrlId": "",
+        "safeName": "",
+        "description": "",
+        "managingCPM": "",
+        "olacEnabled": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "delete_safe",
+      "category": "miscellaneous",
+      "annotation": "delete_safe",
+      "description": "Deletes a safe from the vault. The safe must be empty.",
+      "title": "Delete Safe",
+      "parameters": [
+        {
+          "title": "Safe URL ID",
+          "name": "safeUrlId",
+          "description": "The URL-safe ID of the safe to delete.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "message": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "add_safe_member",
+      "category": "miscellaneous",
+      "annotation": "add_safe_member",
+      "description": "Adds a member to a safe with specified permissions.",
+      "title": "Add Safe Member",
+      "parameters": [
+        {
+          "title": "Safe URL ID",
+          "name": "safeUrlId",
+          "description": "The URL-safe ID of the safe.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Member Name",
+          "name": "memberName",
+          "description": "Name of the vault user, group, or application to add.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Member Type",
+          "name": "memberType",
+          "description": "Type of member being added.",
+          "type": "select",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "options": [
+            "User",
+            "Group",
+            "Role"
+          ],
+          "value": "User"
+        },
+        {
+          "title": "Permissions",
+          "name": "permissions",
+          "description": "JSON object of permissions. Example: {\"useAccounts\": true, \"retrieveAccounts\": true, \"listAccounts\": true}",
+          "type": "json",
+          "visible": true,
+          "editable": true,
+          "required": true,
+          "tooltip": "Provide permissions as JSON. Keys: useAccounts, retrieveAccounts, listAccounts, addAccounts, updateAccountContent, updateAccountProperties, initiateCPMAccountManagementOperations, specifyNextAccountContent, renameAccounts, deleteAccounts, unlockAccounts, manageSafe, manageSafeMembers, backupSafe, viewAuditLog, viewSafeMembers, accessWithoutConfirmation, createFolders, deleteFolders, moveAccountsAndFolders, requestsAuthorizationLevel1, requestsAuthorizationLevel2"
+        }
+      ],
+      "output_schema": {
+        "memberName": "",
+        "memberType": "",
+        "permissions": {}
+      },
+      "enabled": true
+    },
+    {
+      "operation": "list_safe_members",
+      "category": "investigation",
+      "annotation": "list_safe_members",
+      "description": "Lists all members of a specific safe.",
+      "title": "List Safe Members",
+      "parameters": [
+        {
+          "title": "Safe URL ID",
+          "name": "safeUrlId",
+          "description": "The URL-safe ID of the safe.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "value": [
+          {
+            "memberName": "",
+            "memberType": "",
+            "permissions": {}
+          }
+        ],
+        "count": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "update_safe_member",
+      "category": "miscellaneous",
+      "annotation": "update_safe_member",
+      "description": "Updates permissions of an existing safe member.",
+      "title": "Update Safe Member",
+      "parameters": [
+        {
+          "title": "Safe URL ID",
+          "name": "safeUrlId",
+          "description": "The URL-safe ID of the safe.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Member Name",
+          "name": "memberName",
+          "description": "Name of the member to update.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Permissions",
+          "name": "permissions",
+          "description": "JSON object of updated permissions.",
+          "type": "json",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "memberName": "",
+        "memberType": "",
+        "permissions": {}
+      },
+      "enabled": true
+    },
+    {
+      "operation": "delete_safe_member",
+      "category": "miscellaneous",
+      "annotation": "delete_safe_member",
+      "description": "Removes a member from a safe.",
+      "title": "Delete Safe Member",
+      "parameters": [
+        {
+          "title": "Safe URL ID",
+          "name": "safeUrlId",
+          "description": "The URL-safe ID of the safe.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Member Name",
+          "name": "memberName",
+          "description": "Name of the member to remove.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "message": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_safe_account_groups",
+      "category": "investigation",
+      "annotation": "get_safe_account_groups",
+      "description": "Retrieves all account groups associated with a specific safe.",
+      "title": "Get Safe Account Groups",
+      "parameters": [
+        {
+          "title": "Safe Name",
+          "name": "safeName",
+          "description": "Name of the safe.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": [
+        {
+          "GroupID": "",
+          "GroupName": "",
+          "GroupPlatformID": "",
+          "Safe": ""
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "operation": "add_account_group_member",
+      "category": "miscellaneous",
+      "annotation": "add_account_group_member",
+      "description": "Adds an account as a member of an account group.",
+      "title": "Add Account Group Member",
+      "parameters": [
+        {
+          "title": "Group ID",
+          "name": "GroupID",
+          "description": "ID of the account group.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true,
+          "placeholder": "e.g. 25_6"
+        },
+        {
+          "title": "Account ID",
+          "name": "AccountID",
+          "description": "ID of the account to add to the group.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true,
+          "placeholder": "e.g. 25_7"
+        }
+      ],
+      "output_schema": {
+        "AccountID": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_account_group_members",
+      "category": "investigation",
+      "annotation": "get_account_group_members",
+      "description": "Retrieves all members of a specific account group.",
+      "title": "Get Account Group Members",
+      "parameters": [
+        {
+          "title": "Group ID",
+          "name": "GroupID",
+          "description": "ID of the account group.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true,
+          "placeholder": "e.g. 25_6"
+        }
+      ],
+      "output_schema": [
+        {
+          "AccountID": "",
+          "SafeName": "",
+          "PlatformID": "",
+          "Address": "",
+          "UserName": ""
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "operation": "delete_account_group_member",
+      "category": "miscellaneous",
+      "annotation": "delete_account_group_member",
+      "description": "Removes a member from an account group.",
+      "title": "Delete Account Group Member",
+      "parameters": [
+        {
+          "title": "Group ID",
+          "name": "GroupID",
+          "description": "ID of the account group.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Account ID",
+          "name": "AccountID",
+          "description": "ID of the account to remove from the group.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "message": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "add_user",
+      "visible": false,
+      "category": "miscellaneous",
+      "annotation": "add_user",
+      "description": "Creates a new user in the vault.",
+      "title": "Add User",
+      "parameters": [
+        {
+          "title": "Username",
+          "name": "username",
+          "description": "Username for the new user.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Initial Password",
+          "name": "initialPassword",
+          "description": "Initial password for the new user.",
+          "type": "password",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "First Name",
+          "name": "firstName",
+          "description": "First name of the user.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Last Name",
+          "name": "lastName",
+          "description": "Last name of the user.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Email",
+          "name": "email",
+          "description": "Email address of the user.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Enable User",
+          "name": "enableUser",
+          "description": "Whether to enable the user.",
+          "type": "checkbox",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": true
+        },
+        {
+          "title": "Change Password On Next Logon",
+          "name": "changePassOnNextLogon",
+          "description": "Require password change on next logon.",
+          "type": "checkbox",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": false
+        },
+        {
+          "title": "Vault Authorization",
+          "name": "vaultAuthorization",
+          "description": "(Optional) Vault-level permissions for the user.",
+          "type": "multiselect",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "options": [
+            "AddUpdateUsers",
+            "AddSafes",
+            "AddNetworkAreas",
+            "ManageDirectoryMapping",
+            "ManageServerFileCategories",
+            "AuditUsers",
+            "BackupAllSafes",
+            "RestoreAllSafes",
+            "ResetUsersPasswords",
+            "ActivateUsers"
+          ]
+        }
+      ],
+      "output_schema": {
+        "id": "",
+        "username": "",
+        "source": "",
+        "userType": "",
+        "enableUser": "",
+        "vaultAuthorization": []
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_users",
+      "category": "investigation",
+      "annotation": "get_users",
+      "description": "Retrieves a list of users from the vault. Equivalent to 'Logged on User Details' and 'Get Groups' depending on filters.",
+      "title": "Get Users",
+      "parameters": [
+        {
+          "title": "Search",
+          "name": "search",
+          "description": "(Optional) Search string to filter users.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "User Type",
+          "name": "userType",
+          "description": "(Optional) Filter by user type.",
+          "type": "select",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "options": [
+            "EPVUser",
+            "EPVUserLite",
+            "BasicUser",
+            "ExtUser",
+            "PKIUser",
+            "AppProvider"
+          ]
+        },
+        {
+          "title": "Component User",
+          "name": "componentUser",
+          "description": "(Optional) Whether to return component users.",
+          "type": "checkbox",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": false
+        }
+      ],
+      "output_schema": {
+        "Users": [
+          {
+            "id": "",
+            "username": "",
+            "source": "",
+            "userType": "",
+            "componentUser": "",
+            "vaultAuthorization": [],
+            "location": "",
+            "personalDetails": {}
+          }
+        ],
+        "Total": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_user_details",
+      "category": "investigation",
+      "annotation": "user_details",
+      "description": "Retrieves details of a specific user by User ID.",
+      "title": "Get User Details",
+      "parameters": [
+        {
+          "title": "User ID",
+          "name": "userID",
+          "description": "Numeric ID of the user.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "id": "",
+        "username": "",
+        "source": "",
+        "userType": "",
+        "enableUser": "",
+        "personalDetails": {},
+        "vaultAuthorization": []
+      },
+      "enabled": true
+    },
+    {
+      "operation": "update_user",
+      "visible": false,
+      "category": "miscellaneous",
+      "annotation": "update_user",
+      "description": "Updates an existing user in the vault.",
+      "title": "Update User",
+      "parameters": [
+        {
+          "title": "User ID",
+          "name": "userID",
+          "description": "Numeric ID of the user to update.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "First Name",
+          "name": "firstName",
+          "description": "(Optional) Updated first name.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Last Name",
+          "name": "lastName",
+          "description": "(Optional) Updated last name.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Enable User",
+          "name": "enableUser",
+          "description": "(Optional) Enable or disable the user.",
+          "type": "checkbox",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": true
+        },
+        {
+          "title": "Change Password On Next Logon",
+          "name": "changePassOnNextLogon",
+          "description": "(Optional) Require password change on next logon.",
+          "type": "checkbox",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": false
+        }
+      ],
+      "output_schema": {},
+      "enabled": true
+    },
+    {
+      "operation": "delete_user",
+      "visible": false,
+      "category": "miscellaneous",
+      "annotation": "delete_user",
+      "description": "Deletes a user from the vault.",
+      "title": "Delete User",
+      "parameters": [
+        {
+          "title": "User ID",
+          "name": "userID",
+          "description": "Numeric ID of the user to delete.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {},
+      "enabled": true
+    },
+    {
+      "operation": "reset_user_password",
+      "category": "miscellaneous",
+      "annotation": "reset_user_password",
+      "description": "Resets a vault user's password. Requires 'Audit Users' and 'Reset Users Passwords' vault permissions.",
+      "title": "Reset User Password",
+      "parameters": [
+        {
+          "title": "User ID",
+          "name": "userID",
+          "description": "Numeric ID of the user.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "New Password",
+          "name": "newPassword",
+          "description": "New password for the user.",
+          "type": "password",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "message": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "activate_user",
+      "visible": false,
+      "category": "miscellaneous",
+      "annotation": "activate_user",
+      "description": "Activates a suspended user.",
+      "title": "Activate User",
+      "parameters": [
+        {
+          "title": "User ID",
+          "name": "userID",
+          "description": "Numeric ID of the user to activate.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "message": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "add_user_to_group",
+      "category": "miscellaneous",
+      "annotation": "add_user_to_group",
+      "description": "Adds a user to a vault group.",
+      "title": "Add User to Group",
+      "parameters": [
+        {
+          "title": "Group ID",
+          "name": "groupId",
+          "description": "ID of the vault group.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Member ID",
+          "name": "memberId",
+          "description": "The member ID (username) to add to the group.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "memberId": "",
+        "memberType": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_groups",
+      "category": "investigation",
+      "annotation": "get_groups",
+      "description": "Retrieves all vault user groups.",
+      "title": "Get Groups",
+      "parameters": [
+        {
+          "title": "Search",
+          "name": "search",
+          "description": "(Optional) Search for groups by name.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        }
+      ],
+      "output_schema": {
+        "value": [
+          {
+            "id": "",
+            "groupName": "",
+            "groupType": "",
+            "location": ""
+          }
+        ],
+        "count": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "reconcile_credentials",
+      "category": "miscellaneous",
+      "annotation": "reconcile_credentials",
+      "description": "Marks an account for automatic reconciliation by the CPM.",
+      "title": "Reconcile Credentials",
+      "parameters": [
+        {
+          "title": "Account ID",
+          "name": "account_id",
+          "description": "ID of the account to reconcile.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {},
+      "enabled": true
+    },
+    {
+      "operation": "get_recordings",
+      "category": "investigation",
+      "annotation": "get_recordings",
+      "description": "Retrieves session recordings from Privilege Cloud.",
+      "title": "Get Recordings",
+      "parameters": [
+        {
+          "title": "Safe Name",
+          "name": "safe",
+          "description": "(Optional) Filter by safe name.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "From Time",
+          "name": "fromTime",
+          "description": "(Optional) Unix timestamp - return recordings after this time.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "To Time",
+          "name": "toTime",
+          "description": "(Optional) Unix timestamp - return recordings before this time.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Search",
+          "name": "search",
+          "description": "(Optional) Search text to filter recordings by properties.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": false
+        },
+        {
+          "title": "Offset",
+          "name": "offset",
+          "description": "(Optional) Number of items to skip.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": 0
+        },
+        {
+          "title": "Limit",
+          "name": "limit",
+          "description": "(Optional) Maximum results to return. Default: 25.",
+          "type": "integer",
+          "visible": true,
+          "editable": true,
+          "required": false,
+          "value": 25
+        }
+      ],
+      "output_schema": {
+        "Recordings": [],
+        "Total": ""
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_recording_details",
+      "category": "investigation",
+      "annotation": "get_recording_details",
+      "description": "Retrieves details of a specific recording by its ID.",
+      "title": "Get Recording Details",
+      "parameters": [
+        {
+          "title": "Recording ID",
+          "name": "recording_id",
+          "description": "ID of the recording.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {},
+      "enabled": true
+    },
+    {
+      "operation": "play_recording",
+      "category": "investigation",
+      "annotation": "play_recording",
+      "description": "Downloads a recorded PSM session and stores it as a FortiSOAR file attachment (not inline), returning the file metadata. Large recordings are handled as files so the playbook does not stall.",
+      "title": "Play Recording",
+      "parameters": [
+        {
+          "title": "Recording ID",
+          "name": "recording_id",
+          "description": "ID of the recording to play.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "recording_id": "",
+        "file_name": "",
+        "content_type": "",
+        "size_bytes": "",
+        "attachment_iri": "",
+        "file": {
+          "filename": "",
+          "attachment_iri": "",
+          "file_iri": ""
+        }
+      },
+      "enabled": true
+    },
+    {
+      "operation": "get_credentials",
+      "visible": false,
+      "category": "investigation",
+      "annotation": "get_credentials",
+      "description": "Lists all accounts in the vault safe (for vault mode). Uses GET /PasswordVault/API/Accounts with safe filter.",
+      "title": "Get Credentials",
+      "parameters": [],
+      "output_schema": [
+        {
+          "key": "",
+          "display_name": ""
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "operation": "get_credentials_details",
+      "visible": false,
+      "category": "investigation",
+      "annotation": "get_credentials_details",
+      "description": "Retrieves metadata of an account for vault credential display.",
+      "title": "Get Credentials Details",
+      "parameters": [
+        {
+          "title": "Secret ID",
+          "name": "secret_id",
+          "description": "Account ID for credential lookup.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": [
+        {
+          "field_name": "",
+          "value": ""
+        }
+      ],
+      "enabled": true
+    },
+    {
+      "operation": "get_credential",
+      "visible": false,
+      "category": "investigation",
+      "annotation": "get_credential",
+      "description": "Retrieves the actual credential value using the Privilege Cloud Accounts Password/Retrieve endpoint.",
+      "title": "Get Credential",
+      "parameters": [
+        {
+          "title": "Secret ID",
+          "name": "secret_id",
+          "description": "Account ID for password retrieval.",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        },
+        {
+          "title": "Attribute Name",
+          "name": "attribute_name",
+          "description": "Attribute to retrieve (typically 'Password').",
+          "type": "text",
+          "visible": true,
+          "editable": true,
+          "required": true
+        }
+      ],
+      "output_schema": {
+        "password": ""
+      },
+      "enabled": true
+    }
+  ]
+}

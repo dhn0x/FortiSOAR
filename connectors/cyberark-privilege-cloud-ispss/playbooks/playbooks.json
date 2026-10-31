@@ -1,0 +1,3007 @@
+{
+  "type": "workflow_collections",
+  "data": [
+    {
+      "@type": "WorkflowCollection",
+      "name": "Sample - CyberArk - 2.1.0",
+      "description": "Sample playbooks for \"CyberArk\" connector. If you are planning to use any of the sample playbooks in your environment, ensure that you clone those playbooks and move them to a different collection, since the sample playbook collection gets deleted during connector upgrade and delete.",
+      "visible": true,
+      "image": null,
+      "uuid": "ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+      "id": 139,
+      "deletedAt": null,
+      "importedBy": [],
+      "recordTags": [
+        "CyberArk"
+      ],
+      "workflows": [
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Add Safe",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Adds new safe to the Vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578466880,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/804d88c8-b7b0-454d-b555-666992285dbd",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Add Safe",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "SafeName": "Demo",
+                  "Description": "",
+                  "ManagingCPM": "",
+                  "OLACEnabled": "",
+                  "NumberofDaysRetention": "",
+                  "NumberofVersionsRetention": ""
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "add_safe",
+                "operationTitle": "Add Safe",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "440",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "735fb302-8e11-4932-9ae1-a79f4c905c83"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "520908ae-b151-4c98-ac1a-443d37fba408",
+                "title": "CyberArk: Add Safe",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "48",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "804d88c8-b7b0-454d-b555-666992285dbd"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "212",
+              "left": "800",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "929235ac-d08c-449b-ae9c-945359ae20e3"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/929235ac-d08c-449b-ae9c-945359ae20e3",
+              "sourceStep": "/api/3/workflow_steps/735fb302-8e11-4932-9ae1-a79f4c905c83",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "802656a6-63c4-42ee-bfde-4489664dc30a"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/735fb302-8e11-4932-9ae1-a79f4c905c83",
+              "sourceStep": "/api/3/workflow_steps/804d88c8-b7b0-454d-b555-666992285dbd",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "27652e14-b1c4-43d2-93af-46353661eae1"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "127977f1-8eb3-47fe-a7d8-7049831be3c5",
+          "id": 1778,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Add Account Group",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Adds new account group to the Vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1580304533,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/1062feab-4d85-49bc-8ed7-7a7844db345c",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Add Account Group",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "GroupID": "\"25_6\"",
+                  "AccountID": "\"25_27\""
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "add_account_group",
+                "operationTitle": "Add Account Group",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "440",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "972415e4-754a-4090-bae7-84a907bda39c"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "9807e8da-e617-478c-a759-9db997690c57",
+                "title": "CyberArk: Add Account Group",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "34",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "1062feab-4d85-49bc-8ed7-7a7844db345c"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "220",
+              "left": "820",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "50c7237f-df29-43a1-a226-ec710ee49fb7"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/50c7237f-df29-43a1-a226-ec710ee49fb7",
+              "sourceStep": "/api/3/workflow_steps/972415e4-754a-4090-bae7-84a907bda39c",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "96303029-0151-4d5d-bd8d-516c0d571dc8"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/972415e4-754a-4090-bae7-84a907bda39c",
+              "sourceStep": "/api/3/workflow_steps/1062feab-4d85-49bc-8ed7-7a7844db345c",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "436f5594-85ae-4fec-b67c-0abebd2138b2"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "13a74375-da28-447f-921a-0acb9c4948b4",
+          "id": 1785,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Update Safe Member",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Updates an existing safe member",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1727086202,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/ec143edf-21ad-4d35-bd04-51ad63ba66a5",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "38713896-7e5d-41af-b9d6-eb9c4a159c11",
+                "title": "CyberArk: Update Safe Member",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "48",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "ec143edf-21ad-4d35-bd04-51ad63ba66a5"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "240",
+              "left": "760",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "739d33e7-0d3c-4a2f-b387-c7f013f12655"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Update Safe Member",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "SafeName": "Test",
+                  "BackupSafe": true,
+                  "ManageSafe": true,
+                  "MemberName": "testappid",
+                  "AddAccounts": true,
+                  "UseAccounts": true,
+                  "ListAccounts": true,
+                  "ViewAuditLog": true,
+                  "CreateFolders": false,
+                  "DeleteFolders": false,
+                  "DeleteAccounts": true,
+                  "RenameAccounts": true,
+                  "UnlockAccounts": true,
+                  "ViewSafeMembers": true,
+                  "RetrieveAccounts": true,
+                  "ManageSafeMembers": true,
+                  "UpdateAccountContent": true,
+                  "MoveAccountsAndFolders": false,
+                  "UpdateAccountProperties": true,
+                  "AccessWithoutConfirmation": true,
+                  "IsExpiredMembershipEnable": false,
+                  "SpecifyNextAccountContent": true,
+                  "RequestsAuthorizationLevel1": true,
+                  "RequestsAuthorizationLevel2": false,
+                  "InitiateCPMAccountManagementOperations": true
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "update_safe_member",
+                "operationTitle": "Update Safe Member",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "428",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "390af136-7265-4700-aaf4-02b176fac6d7"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/739d33e7-0d3c-4a2f-b387-c7f013f12655",
+              "sourceStep": "/api/3/workflow_steps/390af136-7265-4700-aaf4-02b176fac6d7",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "c2303f9f-219d-40f0-8a4a-0a69f392c9fa"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/390af136-7265-4700-aaf4-02b176fac6d7",
+              "sourceStep": "/api/3/workflow_steps/ec143edf-21ad-4d35-bd04-51ad63ba66a5",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "4c41aa45-606a-431b-a430-77e2bc206c21"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "49c2e27f-554c-43f5-b20b-a2b8e8fd5e5e",
+          "id": 1794,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Safe Details",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Get information about a specific safe in the Vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467366,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/aa33092b-628b-44b1-be58-dd0923fc026c",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "46521b81-14d0-4011-9c87-ea7c9ed77398",
+                "title": "CyberArk: Get Safe Details",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "33",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "aa33092b-628b-44b1-be58-dd0923fc026c"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Safe Details",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "Safe": "Test"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "get_safe_details",
+                "operationTitle": "Get Safe Details",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "391",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "18311b95-f0eb-4214-9b44-7728d12cc09c"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "240",
+              "left": "760",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "f529d54b-7f7e-46dc-b90a-4ed31cad29c8"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/f529d54b-7f7e-46dc-b90a-4ed31cad29c8",
+              "sourceStep": "/api/3/workflow_steps/18311b95-f0eb-4214-9b44-7728d12cc09c",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "64747249-8389-476c-a31f-db922d5bd5af"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/18311b95-f0eb-4214-9b44-7728d12cc09c",
+              "sourceStep": "/api/3/workflow_steps/aa33092b-628b-44b1-be58-dd0923fc026c",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "16ce6c2c-a76b-47e3-ba69-e75464603f9b"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "4b969a3b-92bc-4d4b-81b5-e5537c68f9b2",
+          "id": 1779,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get User Details",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Get the user information about a specific user in the Vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467396,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/497a3a50-80e4-4464-a857-ffa4c0d365a8",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "fd65afd9-3de2-4352-952d-9c2ca536bab3",
+                "title": "CyberArk: Get User Details",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "28",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "497a3a50-80e4-4464-a857-ffa4c0d365a8"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Get User Details",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "userID": 2
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "get_user_details",
+                "operationTitle": "Get User Details",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "353",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "42a03a3f-488a-41e1-acab-229ef1f361bf"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "248",
+              "left": "732",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "d27adbb6-e423-40f2-b541-7e3c4de35334"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/d27adbb6-e423-40f2-b541-7e3c4de35334",
+              "sourceStep": "/api/3/workflow_steps/42a03a3f-488a-41e1-acab-229ef1f361bf",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "3187c27f-fed9-4b4f-9760-ee1fbbdd4cad"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/42a03a3f-488a-41e1-acab-229ef1f361bf",
+              "sourceStep": "/api/3/workflow_steps/497a3a50-80e4-4464-a857-ffa4c0d365a8",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "4a79ef70-cf89-4edd-8065-d62e3a4f6eef"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "55cd60c4-0978-49a9-acee-1943dba4c82c",
+          "id": 1783,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Delete Safe Member",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Removes a specific member from a safe",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467213,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/b679aa26-154a-4320-92ab-1acf8c593c45",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "5bbb3746-0bf0-440a-ab32-335be73e6e4c",
+                "title": "CyberArk: Delete Safe Member",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "b679aa26-154a-4320-92ab-1acf8c593c45"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Delete Safe Member",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "Safe": "Test",
+                  "MemberName": "testappid"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "delete_safe_member",
+                "operationTitle": "Delete Safe Member",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "468",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "e13ff581-2ca6-4c25-b08b-087fc29fe97b"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "211",
+              "left": "860",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "9cde33de-2018-4f4c-8377-c3f227c9342f"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/9cde33de-2018-4f4c-8377-c3f227c9342f",
+              "sourceStep": "/api/3/workflow_steps/e13ff581-2ca6-4c25-b08b-087fc29fe97b",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "6520fd89-91fa-4231-b31f-2eec3264a7c5"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/e13ff581-2ca6-4c25-b08b-087fc29fe97b",
+              "sourceStep": "/api/3/workflow_steps/b679aa26-154a-4320-92ab-1acf8c593c45",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "86a086b9-59c9-4bef-a94c-48df17f7a81f"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "6fef3be4-40a4-4ea9-8d2c-ec89b04403bf",
+          "id": 1782,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "List Safe Members",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "List of the members of the Safe",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1580103541,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/b9b90ae4-248c-4e61-b07a-14064130cd86",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "49302763-2983-4149-86b3-2509afcfa597",
+                "title": "CyberArk: List Safe Members",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "31",
+              "left": "60",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "b9b90ae4-248c-4e61-b07a-14064130cd86"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "List Safe Members",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "Safe": "",
+                  "SafeName": "Test",
+                  "undefined": "Test"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "list_safe_members",
+                "operationTitle": "List Safe Members",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "130",
+              "left": "460",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "c337556e-0bfe-48cd-b7a0-573accd79386"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "240",
+              "left": "800",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "36c12e14-7f1d-4570-9718-f53147a4b635"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/36c12e14-7f1d-4570-9718-f53147a4b635",
+              "sourceStep": "/api/3/workflow_steps/c337556e-0bfe-48cd-b7a0-573accd79386",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "ebebc742-5a86-4d88-af7c-b481d2217916"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/c337556e-0bfe-48cd-b7a0-573accd79386",
+              "sourceStep": "/api/3/workflow_steps/b9b90ae4-248c-4e61-b07a-14064130cd86",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "9dab38a0-3f8f-452e-b6d6-3e9d6157587d"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "7eacfc3f-80b6-4e2c-be62-d370662d4bea",
+          "id": 1775,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Search Safe",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Get information about the safes in the Vault that meet the criteria specified in the search query",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467471,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/0b3aded3-f81e-47b0-ad48-ae4567f6bfce",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "2e803daf-5886-4711-917f-055123736967",
+                "title": "CyberArk: Search Safe",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "34",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "0b3aded3-f81e-47b0-ad48-ae4567f6bfce"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "209",
+              "left": "846",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "e38a5eff-eeee-4112-acb2-acd8bfeddeab"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Search Safe",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "query": "Test"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "search_safe",
+                "operationTitle": "Search Safe",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "427",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "a4219ff4-92d8-4fdc-b610-e28bd9ff68a5"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/e38a5eff-eeee-4112-acb2-acd8bfeddeab",
+              "sourceStep": "/api/3/workflow_steps/a4219ff4-92d8-4fdc-b610-e28bd9ff68a5",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "1a51928a-a4bb-4f14-b99f-47e5dd549a20"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/a4219ff4-92d8-4fdc-b610-e28bd9ff68a5",
+              "sourceStep": "/api/3/workflow_steps/0b3aded3-f81e-47b0-ad48-ae4567f6bfce",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "d8f8eb08-bbe6-4dc6-89b6-9206ee9874bb"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "7fbf130e-97c6-405f-8648-6cf1aab73b77",
+          "id": 1786,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Logged on User Details",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Get the user information of the user who is logged on",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1577102562,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/e61d9082-ab3b-4bbb-a68e-70c627ff8cf9",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "09a03330-178c-464e-a3c8-756c41ca073d",
+                "title": "CyberArk: Logged on User Details",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "e61d9082-ab3b-4bbb-a68e-70c627ff8cf9"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Logged on User Details",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": [],
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "logged_on_user_details",
+                "operationTitle": "Logged on User Details",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "108",
+              "left": "360",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "5199b5b9-75b6-4828-8916-59750bd6d256"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "211",
+              "left": "752",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "1e46d8eb-9590-4bee-bef7-a3dfe839c0f9"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/1e46d8eb-9590-4bee-bef7-a3dfe839c0f9",
+              "sourceStep": "/api/3/workflow_steps/5199b5b9-75b6-4828-8916-59750bd6d256",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "14e88220-2e72-4b17-8379-84bcc8cf814d"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/5199b5b9-75b6-4828-8916-59750bd6d256",
+              "sourceStep": "/api/3/workflow_steps/e61d9082-ab3b-4bbb-a68e-70c627ff8cf9",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "416526f7-eb0a-421f-8ff3-78b46a480483"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "81896e9b-0403-43dd-836b-0a61bfb47edc",
+          "id": 1788,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Delete Member from Account Group",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Removes an account member from an account group",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1580304401,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/2c6ec291-9817-4392-9c53-fbd63ba45fe4",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "b976b870-b381-4855-9436-e68bb0fbc5fe",
+                "title": "CyberArk: Delete Member from Account Group",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "48",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "2c6ec291-9817-4392-9c53-fbd63ba45fe4"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Delete Member from Account Group",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "GroupID": "\"25_6\"",
+                  "AccountID": "\"25_7\""
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "delete_account_group_members",
+                "operationTitle": "Delete Member from Account Group",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "133",
+              "left": "440",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "be6ab413-1ea7-4b63-9529-39e552a7f3ef"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "220",
+              "left": "900",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "715b9637-fc99-4844-8f6f-30cb6b31a246"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/715b9637-fc99-4844-8f6f-30cb6b31a246",
+              "sourceStep": "/api/3/workflow_steps/be6ab413-1ea7-4b63-9529-39e552a7f3ef",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "a3d76912-7855-4d8a-80ad-e1967db3e94d"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/be6ab413-1ea7-4b63-9529-39e552a7f3ef",
+              "sourceStep": "/api/3/workflow_steps/2c6ec291-9817-4392-9c53-fbd63ba45fe4",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "9f676c2c-ef4e-4862-89ee-c92e399899c8"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "8d7bbab9-7785-4b44-bc58-f1c68de3a3ce",
+          "id": 1776,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Account Group Members",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Get all the members of an existing account group",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1580304420,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/27db26fd-58cd-4003-b82f-7d66cea017fb",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "09458e13-5a71-4b83-81be-7a2e4555b59e",
+                "title": "CyberArk: Get Account Group Members",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "29",
+              "left": "31",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "27db26fd-58cd-4003-b82f-7d66cea017fb"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Account Group Members",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "GroupID": "\"25_6\""
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "get_account_group_members",
+                "operationTitle": "Get Account Group Members",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "132",
+              "left": "451",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "e878fcf9-cf2f-4f3f-99d2-cd9e21aed68e"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "268",
+              "left": "814",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "fb18cf6e-4f03-429a-a11f-cabbdb5cbc8f"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/fb18cf6e-4f03-429a-a11f-cabbdb5cbc8f",
+              "sourceStep": "/api/3/workflow_steps/e878fcf9-cf2f-4f3f-99d2-cd9e21aed68e",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "a410d0d1-2973-421e-a28a-adfad6aaea84"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/e878fcf9-cf2f-4f3f-99d2-cd9e21aed68e",
+              "sourceStep": "/api/3/workflow_steps/27db26fd-58cd-4003-b82f-7d66cea017fb",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "a40fddfc-ebe9-4975-8a28-2e5d28c9f78b"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "8f37ebdd-27a5-40a4-925b-4ef8fac7294d",
+          "id": 1784,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Safe Account Groups",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Get all the existing account groups in a specific Safe",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467349,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/ed47c5e3-cdd5-4fd6-9392-cf564d31d51f",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "e1da9997-ce18-4b5a-8e75-e09c875ca9f8",
+                "title": "CyberArk: Get Safe Account Groups",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "46",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "ed47c5e3-cdd5-4fd6-9392-cf564d31d51f"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Safe Account Groups",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "SafeName": "Test"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "get_safe_account_groups",
+                "operationTitle": "Get Safe Account Groups",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "440",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "adc7f271-2f69-4fdd-988a-06bfdf4c426f"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "268",
+              "left": "788",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "30d30579-e412-4800-b9ba-ce0bd9adaef6"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/30d30579-e412-4800-b9ba-ce0bd9adaef6",
+              "sourceStep": "/api/3/workflow_steps/adc7f271-2f69-4fdd-988a-06bfdf4c426f",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "4e693124-8611-4ae1-8e10-c1b582686d12"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/adc7f271-2f69-4fdd-988a-06bfdf4c426f",
+              "sourceStep": "/api/3/workflow_steps/ed47c5e3-cdd5-4fd6-9392-cf564d31d51f",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "5499fcf5-4714-46c8-a3c4-7ffff98d2035"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "98abcbdf-56ed-4689-abea-701d535b13f2",
+          "id": 1793,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Reconcile Credentials",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Marks an account for automatic reconciliation by the CPM.",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1727086184,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/735af05d-4adc-4e42-a935-25aa744be252",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Reconcile Credentials",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "account_id": "1"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "reconcile_credentials",
+                "operationTitle": "Reconcile Credentials",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "165",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "8b60740c-6cc6-4504-be04-e677672bf4c0"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "977b6233-47eb-4dc5-98a0-29fa13ed81b5",
+                "title": "CyberArk: Reconcile Credentials",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "735af05d-4adc-4e42-a935-25aa744be252"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Reconcile Credentials",
+              "targetStep": "/api/3/workflow_steps/8b60740c-6cc6-4504-be04-e677672bf4c0",
+              "sourceStep": "/api/3/workflow_steps/735af05d-4adc-4e42-a935-25aa744be252",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "875517c7-f521-48c6-ba6c-6e7c70a82c82"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "a0e3f9b3-c0ad-4030-853a-40cf8cc749c7",
+          "id": 1796,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Groups",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Retrieves the groups information of the existing user.",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467319,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/5f1856ae-dd3c-4980-8e16-7909f98272f4",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Groups",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": [],
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "get_groups",
+                "operationTitle": "Get Groups",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "164",
+              "left": "296",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "1c869cd0-74a3-416b-a03a-b3ab22e33b51"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "267",
+              "left": "717",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "fea6fe94-304b-4f38-8835-896878991aec"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "533003d7-607b-4f93-a681-90b71d31bdab",
+                "title": "CyberArk: Get Groups",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "20",
+              "left": "20",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "5f1856ae-dd3c-4980-8e16-7909f98272f4"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Get Groups -> Save Response",
+              "targetStep": "/api/3/workflow_steps/fea6fe94-304b-4f38-8835-896878991aec",
+              "sourceStep": "/api/3/workflow_steps/1c869cd0-74a3-416b-a03a-b3ab22e33b51",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "b0b86b68-945d-47c0-902e-9dc0cdf5a7e7"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Groups",
+              "targetStep": "/api/3/workflow_steps/1c869cd0-74a3-416b-a03a-b3ab22e33b51",
+              "sourceStep": "/api/3/workflow_steps/5f1856ae-dd3c-4980-8e16-7909f98272f4",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "b1fc089e-089e-4dc7-bd87-a2e6e832f255"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "b6ba8575-0b5a-4ea2-accd-744fe2b3fd6e",
+          "id": 1792,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Data Stream of Recorded Session",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Retrieves a data stream of a specific recorded session.",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1727086243,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/c6bbc3a6-cf0c-4b0f-b694-0cf29f56aeb2",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Data Stream of Recorded Session",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "recording_id": "1"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "play_recording",
+                "operationTitle": "Get Data Stream of Recorded Session",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "247",
+              "left": "161",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "4af9ef1b-074a-4729-9f70-947d544c787e"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "ed2e6fb5-3c66-49f2-86ba-2664ccbecbf0",
+                "title": "CyberArk: Get Data Stream of Recorded Session",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "c6bbc3a6-cf0c-4b0f-b694-0cf29f56aeb2"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Data Stream of Recorded Session",
+              "targetStep": "/api/3/workflow_steps/4af9ef1b-074a-4729-9f70-947d544c787e",
+              "sourceStep": "/api/3/workflow_steps/c6bbc3a6-cf0c-4b0f-b694-0cf29f56aeb2",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "cf721531-2f49-4801-b128-af087e8d42b6"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "bec708c3-58e3-4845-9ef7-a4abfaafc18d",
+          "id": 1797,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Accounts",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Retrieves all account details in the vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467252,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/aa4c6c18-114c-4b04-bf44-bfcca201817d",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "3d93be0f-c3aa-40f6-b303-d1046c756551",
+                "title": "CyberArk:Get Accounts",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "46",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "aa4c6c18-114c-4b04-bf44-bfcca201817d"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Accounts",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": [],
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "get_account",
+                "operationTitle": "Get Accounts",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "408",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "7caae00d-781b-4e7e-a79a-9552bff3ddb2"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "229",
+              "left": "760",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "7d7ab2a0-8ebc-4e21-80b2-84bc2a910005"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/7d7ab2a0-8ebc-4e21-80b2-84bc2a910005",
+              "sourceStep": "/api/3/workflow_steps/7caae00d-781b-4e7e-a79a-9552bff3ddb2",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "97eeb9f0-da19-4e06-8ac3-f3b2d4e624df"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/7caae00d-781b-4e7e-a79a-9552bff3ddb2",
+              "sourceStep": "/api/3/workflow_steps/aa4c6c18-114c-4b04-bf44-bfcca201817d",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "4a83c98b-c1a9-43a6-af0f-69509e993e74"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "c65c96dd-c9e6-4760-aecb-87b69ccb331e",
+          "id": 1790,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Update Safe",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Updates the specified safe in the Vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467511,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/47d6f7c0-c541-4b78-884a-10997231fed6",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "57539a6f-8d7b-40af-84bb-c6fdadb433f3",
+                "title": "CyberArk: Update Safe",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "20",
+              "left": "50",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "47d6f7c0-c541-4b78-884a-10997231fed6"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "210",
+              "left": "760",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "24aff162-2260-4829-850b-604b9007f9e9"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Update Safe",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "Location": "\\\\",
+                  "SafeName": "Test",
+                  "Description": "",
+                  "ManagingCPM": "",
+                  "OLACEnabled": true,
+                  "NumberOfDaysRetention": "",
+                  "NumberOfVersionsRetention": ""
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "update_safe",
+                "operationTitle": "Update Safe",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "394",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "4913f65c-be4b-48c6-b8dd-5ac273b2b143"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/24aff162-2260-4829-850b-604b9007f9e9",
+              "sourceStep": "/api/3/workflow_steps/4913f65c-be4b-48c6-b8dd-5ac273b2b143",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "d5ce050e-0223-4442-9a0c-166784e2bce2"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/4913f65c-be4b-48c6-b8dd-5ac273b2b143",
+              "sourceStep": "/api/3/workflow_steps/47d6f7c0-c541-4b78-884a-10997231fed6",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "30ff4ae1-3870-4ca0-94ff-f58e9764b87b"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "c930f705-7c54-40d7-b985-3c88513d0b53",
+          "id": 1787,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "List Safes",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Get information about all of the user\u2019s safes in the Vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1580906477,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/9eb0fcc9-9977-4d19-bdf5-2b1034cf7599",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "b1a0d0ed-dbe9-4943-9901-f4f219fe80ae",
+                "title": "CyberArk: List Safes",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "28",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "9eb0fcc9-9977-4d19-bdf5-2b1034cf7599"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "List Safes",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "limit": "12"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "list_safes",
+                "operationTitle": "List Safes",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "162",
+              "left": "323",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "f4c0a2e2-1f20-4681-9451-b1e983d09129"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "280",
+              "left": "605",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "e278d095-ab35-4ef2-b538-9f0321b92a7d"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> list",
+              "targetStep": "/api/3/workflow_steps/f4c0a2e2-1f20-4681-9451-b1e983d09129",
+              "sourceStep": "/api/3/workflow_steps/9eb0fcc9-9977-4d19-bdf5-2b1034cf7599",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "d8b2cff4-0a82-4004-a29e-baa144d0c187"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "list -> Save Response",
+              "targetStep": "/api/3/workflow_steps/e278d095-ab35-4ef2-b538-9f0321b92a7d",
+              "sourceStep": "/api/3/workflow_steps/f4c0a2e2-1f20-4681-9451-b1e983d09129",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "dcb68d71-c242-461d-839e-fe0e25804c01"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "cb97c293-e893-42b4-84bc-a444b36ea16b",
+          "id": 1777,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Reset User Password",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Reset an existing vault user's password. User must have the audit users and reset users passwords permission in the vault.User must be in the same location or higher as the user whose password is being reset.",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1580363793,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/e92cc464-903e-47ab-9c16-f8e12d78c55c",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Reset User Password",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "userID": 2,
+                  "newPassword": ""
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "reset_user_password",
+                "operationTitle": "Reset User Password",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "217",
+              "left": "275",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "b3f95d76-155a-4a77-9c0f-2caf8aa9741d"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "376",
+              "left": "584",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "99a66d28-4d74-4f6d-b08f-f2bdee6c81a7"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "ddf71852-ed46-4b78-b48a-4170dc87cce6",
+                "title": "CyberArk: Reset User Password",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "e92cc464-903e-47ab-9c16-f8e12d78c55c"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Reset User Password -> Save Response",
+              "targetStep": "/api/3/workflow_steps/99a66d28-4d74-4f6d-b08f-f2bdee6c81a7",
+              "sourceStep": "/api/3/workflow_steps/b3f95d76-155a-4a77-9c0f-2caf8aa9741d",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "ad4bc7d2-b263-403e-abdc-a2da7569bc5f"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Reset User Password",
+              "targetStep": "/api/3/workflow_steps/b3f95d76-155a-4a77-9c0f-2caf8aa9741d",
+              "sourceStep": "/api/3/workflow_steps/e92cc464-903e-47ab-9c16-f8e12d78c55c",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "4345ed89-da74-4751-a047-fc282d602d6f"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "d0f7f2c0-6856-47ab-ada3-18a9cd4a7ce0",
+          "id": 1791,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Recording Details by ID",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Retrieve the details of a specific recorded session from cyberArk.",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1727086332,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/8017a42d-3e01-4ec3-b382-0ef4e38e0c46",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Recording Details by ID",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "recording_id": "1"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "get_recording_details",
+                "operationTitle": "Get Recording Details by ID",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "197",
+              "left": "153",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "86fd7319-01d2-4ca5-8746-a0f842285c7c"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "5e00c69d-5c7f-4d75-9cff-c92687381b10",
+                "title": "CyberArk: Get Recording Details by ID",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "40",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "8017a42d-3e01-4ec3-b382-0ef4e38e0c46"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Recording Details by ID",
+              "targetStep": "/api/3/workflow_steps/86fd7319-01d2-4ca5-8746-a0f842285c7c",
+              "sourceStep": "/api/3/workflow_steps/8017a42d-3e01-4ec3-b382-0ef4e38e0c46",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "f85321e4-2708-43cc-8bb7-238dcc7ce227"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "d8312127-9b7d-4a23-8586-f002e706ef62",
+          "id": 1799,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Add User to Group",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Adds a specific user to an existing user group in the Vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467094,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/68d58abc-f4aa-4f5a-9610-f2a17dc62087",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Add User to Group",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "GroupID": 41,
+                  "MemberID": "testappid"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "add_user_to_group",
+                "operationTitle": "Add User to Group",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "407",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "a60e9c99-ab6c-4d57-9ad4-5801ec963c1d"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "b2a764c1-2ecc-462b-817e-876e9adff431",
+                "title": "CyberArk: Add User to Group",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "32",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "68d58abc-f4aa-4f5a-9610-f2a17dc62087"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "220",
+              "left": "820",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "fbb20d9e-0c1e-4180-a84e-cd71e77b021f"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/fbb20d9e-0c1e-4180-a84e-cd71e77b021f",
+              "sourceStep": "/api/3/workflow_steps/a60e9c99-ab6c-4d57-9ad4-5801ec963c1d",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "180f8f90-b1e5-4960-a8f4-16c4dd3d336d"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/a60e9c99-ab6c-4d57-9ad4-5801ec963c1d",
+              "sourceStep": "/api/3/workflow_steps/68d58abc-f4aa-4f5a-9610-f2a17dc62087",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "6df8d5fb-87c0-4924-a59c-4e5980d1bf7b"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "e7991225-f25f-448c-a88b-b07df0dfd9ee",
+          "id": 1789,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Delete Safe",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Delete the specified safe from the Vault",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578467181,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/67817fa8-4d65-4fc8-85d4-a6acfab378e1",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "bdb81b17-9d1e-42c0-ac1e-27cc5f4172be",
+                "title": "CyberArk: Delete Safe",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "31",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "67817fa8-4d65-4fc8-85d4-a6acfab378e1"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Delete Safe",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "SafeName": "CT"
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "delete_safe",
+                "operationTitle": "Delete Safe",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "400",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "329a6cd8-359d-42b3-a647-92b22f7a9252"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "207",
+              "left": "780",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "024efb4f-309a-434a-bbf7-a890c56e8fe4"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/024efb4f-309a-434a-bbf7-a890c56e8fe4",
+              "sourceStep": "/api/3/workflow_steps/329a6cd8-359d-42b3-a647-92b22f7a9252",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "19839e42-a982-4f7a-9afc-252644808870"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/329a6cd8-359d-42b3-a647-92b22f7a9252",
+              "sourceStep": "/api/3/workflow_steps/67817fa8-4d65-4fc8-85d4-a6acfab378e1",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "02a51aca-28ab-48ea-9047-ae89ebbef01c"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "e9e77596-5dcb-467c-8952-c2c27e533211",
+          "id": 1781,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Add Safe Member",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Adds an existing user as a safe member",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1578466911,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/5fdf61c6-c2b7-40be-a25e-102592fc1fb2",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Add Safe Member",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "SafeName": "Test",
+                  "BackupSafe": false,
+                  "ManageSafe": true,
+                  "MemberName": "testappid",
+                  "AddAccounts": true,
+                  "UseAccounts": true,
+                  "ListAccounts": true,
+                  "ViewAuditLog": false,
+                  "CreateFolders": false,
+                  "DeleteFolders": false,
+                  "DeleteAccounts": false,
+                  "RenameAccounts": false,
+                  "UnlockAccounts": false,
+                  "ViewSafeMembers": true,
+                  "RetrieveAccounts": true,
+                  "ManageSafeMembers": true,
+                  "UpdateAccountContent": true,
+                  "MoveAccountsAndFolders": true,
+                  "UpdateAccountProperties": true,
+                  "AccessWithoutConfirmation": true,
+                  "IsExpiredMembershipEnable": false,
+                  "SpecifyNextAccountContent": true,
+                  "RequestsAuthorizationLevel1": true,
+                  "RequestsAuthorizationLevel2": true,
+                  "InitiateCPMAccountManagementOperations": true
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "add_safe_member",
+                "operationTitle": "Add Safe Member",
+                "step_variables": []
+              },
+              "status": null,
+              "top": "120",
+              "left": "420",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "387c83e6-b749-4d04-9805-acb1f43f83aa"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "c99466a0-6f7d-4c72-ab8b-3f25186a4ebb",
+                "title": "CyberArk: Add Safe Member",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "20",
+              "left": "40",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "5fdf61c6-c2b7-40be-a25e-102592fc1fb2"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Save Response",
+              "description": null,
+              "arguments": {
+                "response": "{{ vars.result.data }}"
+              },
+              "status": null,
+              "top": "220",
+              "left": "826",
+              "stepType": "/api/3/workflow_step_types/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+              "group": null,
+              "uuid": "0f574f27-97df-4ea6-9bcc-95b03d834ba6"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Add Account Group -> Save Response",
+              "targetStep": "/api/3/workflow_steps/0f574f27-97df-4ea6-9bcc-95b03d834ba6",
+              "sourceStep": "/api/3/workflow_steps/387c83e6-b749-4d04-9805-acb1f43f83aa",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "de7a4389-2241-4951-8794-84eb8e714be1"
+            },
+            {
+              "@type": "WorkflowRoute",
+              "name": "Alerts -> Add Account Group",
+              "targetStep": "/api/3/workflow_steps/387c83e6-b749-4d04-9805-acb1f43f83aa",
+              "sourceStep": "/api/3/workflow_steps/5fdf61c6-c2b7-40be-a25e-102592fc1fb2",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "b7cb91d6-ccab-4cdd-b001-390a5725bc67"
+            }
+          ],
+          "groups": [],
+          "priority": null,
+          "uuid": "f0140f46-265f-43b3-9465-51a0ba12a34f",
+          "id": 1780,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        },
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Get Recordings",
+          "aliasName": null,
+          "tag": "#CyberArk",
+          "description": "Retrieves the details of recordings of PSM, PSM for SSH, or OPM sessions from CyberArk.",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1727086289,
+          "collection": "/api/3/workflow_collections/ea4b0eed-461f-49ef-bd74-8603930c7c2b",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/2ac35ad1-7e05-43d5-98d9-71882aa49a48",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Get Recordings",
+              "description": null,
+              "arguments": {
+                "name": "CyberArk",
+                "config": "",
+                "params": {
+                  "safe": "",
+                  "sort": "",
+                  "limit": 50,
+                  "offset": 0,
+                  "search": "",
+                  "to_time": "",
+                  "from_time": "",
+                  "activities": ""
+                },
+                "version": "2.1.0",
+                "connector": "cyberark",
+                "operation": "get_recordings",
+                "operationTitle": "Get Recordings",
+                "pickFromTenant": false,
+                "step_variables": []
+              },
+              "status": null,
+              "top": "165",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "group": null,
+              "uuid": "a803815f-6c05-4e50-9d98-c901a4b7e383"
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "5857b46c-8268-4f65-bc44-8237f040b22a",
+                "title": "CyberArk: Get Recordings",
+                "resources": [
+                  "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "triggerOnSource": true,
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "showToasterMessage": {
+                  "visible": false,
+                  "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "30",
+              "left": "125",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "group": null,
+              "uuid": "2ac35ad1-7e05-43d5-98d9-71882aa49a48"
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Get Recordings",
+              "targetStep": "/api/3/workflow_steps/a803815f-6c05-4e50-9d98-c901a4b7e383",
+              "sourceStep": "/api/3/workflow_steps/2ac35ad1-7e05-43d5-98d9-71882aa49a48",
+              "label": null,
+              "isExecuted": false,
+              "group": null,
+              "uuid": "f97e7999-6fac-42c8-a91a-8545d31bed67"
+            }
+          ],
+          "groups": [],
+          "priority": "/api/3/picklists/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+          "uuid": "fdc5bb7e-8b1b-4d45-902d-a0ee5056ea55",
+          "id": 1798,
+          "owners": [],
+          "isPrivate": false,
+          "deletedAt": null,
+          "importedBy": [],
+          "recordTags": [
+            "cyberark"
+          ]
+        }
+      ]
+    }
+  ],
+  "exported_tags": [
+    "CyberArk"
+  ]
+}

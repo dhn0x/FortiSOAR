@@ -12,6 +12,8 @@ Services (ISPSS) deployment and the legacy Privilege Cloud Standard deployment.
 
 ---
 
+For step-by-step setup, playbook output mapping, and input examples for all 32 actions, see [Integration and Action Examples](INTEGRATION_AND_ACTION_EXAMPLES.md).
+
 ## 1. Compatibility
 
 | Item | Requirement |
@@ -86,7 +88,7 @@ run **Health Check**.
 |---|---|---|
 | Server URL | Yes | ISPSS: `https://<subdomain>.cyberark.cloud`. Standard: `https://<subdomain>.privilegecloud.cyberark.com`. |
 | Identity Tenant URL | No | ISPSS only. Full Identity host serving `/oauth2/platformtoken`. Set when the Identity tenant ID differs from the portal subdomain. Blank → auto-derive `https://<subdomain>.id.cyberark.cloud`. |
-| Privilege Cloud API URL | No | Full PVWA API base URL. Set only if the API host differs from `https://<subdomain>.privilegecloud.cyberark.cloud`. Blank → auto-derive. |
+| Privilege Cloud API URL | No | PVWA host URL only, without `/PasswordVault/API`. Set only if the API host differs from `https://<subdomain>.privilegecloud.cyberark.cloud`. Blank → auto-derive. |
 | Authentication Type | Yes | `ServiceUser`, `CyberArk`, `LDAP`, or `RADIUS`. |
 | Username / Client ID | Yes | Service user login name (ServiceUser) or account username. |
 | Password / Client Secret | Yes | Service user password (ServiceUser) or account password. Write-only. |
@@ -364,7 +366,7 @@ Reset Users Passwords.
 |---|---|---|
 | recording_id | text | Yes |
 
-**Play Recording** — retrieve a recorded session data stream.
+**Play Recording** — download a recording as a FortiSOAR attachment. Use the returned `attachment_iri` to append it to an incident. If file utilities are unavailable, inspect the `content_base64` fallback; see the integration guide.
 
 | Parameter | Type | Required |
 |---|---|---|

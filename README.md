@@ -24,3 +24,7 @@ This is a community project and is not an official CyberArk or Fortinet product.
 ## Author and license
 
 Created by **dhaneshwar ([@dhn0x](https://github.com/dhn0x))**. Licensed under the [MIT License](LICENSE). Third-party names and logos remain the property of their respective owners.
+
+## Integration walkthrough
+
+See [step-by-step integration and examples for every action](connectors/cyberark-privilege-cloud-ispss/INTEGRATION_AND_ACTION_EXAMPLES.md).

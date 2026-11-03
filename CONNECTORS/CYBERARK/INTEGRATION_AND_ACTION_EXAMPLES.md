@@ -10,7 +10,7 @@ Allow outbound HTTPS from the FortiSOAR node or executing agent to both the Iden
 
 ## 2. Install and configure
 
-1. Download `cyberark-privilege-cloud-ispss-1.0.2.tgz` from the repository's `dist/` directory using the raw download option. Optionally compare its SHA-256 with `dist/SHA256SUMS`.
+1. Download `cyberark-privilege-cloud-ispss-1.0.2.tgz` from the repository's `CONNECTORS/CYBERARK/dist/` directory using the raw download option. Optionally compare its SHA-256 with `CONNECTORS/CYBERARK/dist/SHA256SUMS`.
 2. Import it through **Content Hub → Manage → Add Connector**. Menu labels can vary by FortiSOAR release.
 3. Open **CyberArk Privilege Cloud (ISPSS)** and create a named configuration, for example `CyberArk-ISPSS-Lab`.
 4. Enter the configuration below, substituting your actual hosts and identity. Save credentials only in the connector's protected configuration fields.

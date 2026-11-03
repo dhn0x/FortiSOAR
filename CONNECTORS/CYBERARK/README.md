@@ -114,3 +114,14 @@ Created by **dhaneshwar ([@dhn0x](https://github.com/dhn0x))**. Licensed under t
 ## Integration walkthrough
 
 See [step-by-step integration and examples for every action](INTEGRATION_AND_ACTION_EXAMPLES.md).
+
+## Files in this folder
+
+- [Download the connector package](dist/) and [verify its SHA-256](dist/SHA256SUMS).
+- [Detailed documentation](DOCUMENTATION.md).
+- [All 32 actions and use cases](ACTIONS_AND_USE_CASES.md).
+- [Integration walkthrough and action inputs](INTEGRATION_AND_ACTION_EXAMPLES.md).
+- [Release notes](release_notes.md).
+- [Community post](COMMUNITY_POST_UPDATE.md).
+- [Reference playbooks](playbooks/playbooks.json).
+- Source: [connector.py](connector.py), [operations.py](operations.py), and [info.json](info.json).

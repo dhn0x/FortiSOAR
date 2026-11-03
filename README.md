@@ -6,14 +6,14 @@ Created and maintained by **dhaneshwar ([@dhn0x](https://github.com/dhn0x))**.
 
 A community FortiSOAR connector for CyberArk Privilege Cloud ISPSS and Privilege Cloud Standard. It provides 32 actions for privileged account discovery, credential retrieval and reconciliation, safe and membership administration, vault users and groups, and session recording retrieval. ISPSS supports separate Identity and API hosts and service-user OAuth2 authentication.
 
-- [Installation and configuration](connectors/cyberark-privilege-cloud-ispss/README.md)
-- [Detailed connector guide](connectors/cyberark-privilege-cloud-ispss/DOCUMENTATION.md)
-- [All 32 actions and practical use cases](connectors/cyberark-privilege-cloud-ispss/ACTIONS_AND_USE_CASES.md)
-- [Release notes](connectors/cyberark-privilege-cloud-ispss/release_notes.md)
+- [Installation and configuration](CONNECTORS/CYBERARK/README.md)
+- [Detailed connector guide](CONNECTORS/CYBERARK/DOCUMENTATION.md)
+- [All 32 actions and practical use cases](CONNECTORS/CYBERARK/ACTIONS_AND_USE_CASES.md)
+- [Release notes](CONNECTORS/CYBERARK/release_notes.md)
 
 ## Installation
 
-Download the `.tgz` package from `dist/` and import it through FortiSOAR **Content Hub → Manage → Add Connector**. Configure your tenant URLs, authentication and least-privilege permissions, keep certificate verification enabled, then run the connector health check. See the connector guide for the full configuration.
+Download the `.tgz` package from [CONNECTORS/CYBERARK/dist](CONNECTORS/CYBERARK/dist) and import it through FortiSOAR **Content Hub → Manage → Add Connector**. Configure your tenant URLs, authentication and least-privilege permissions, keep certificate verification enabled, then run the connector health check. See the connector guide for the full configuration.
 
 ## Validation and sample playbooks
 
@@ -27,4 +27,4 @@ Created by **dhaneshwar ([@dhn0x](https://github.com/dhn0x))**. Licensed under t
 
 ## Integration walkthrough
 
-See [step-by-step integration and examples for every action](connectors/cyberark-privilege-cloud-ispss/INTEGRATION_AND_ACTION_EXAMPLES.md).
+See [step-by-step integration and examples for every action](CONNECTORS/CYBERARK/INTEGRATION_AND_ACTION_EXAMPLES.md).

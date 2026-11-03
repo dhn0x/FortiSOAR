@@ -6,7 +6,7 @@ The connector supports ISPSS and Privilege Cloud Standard, with 32 actions cover
 
 ## How to integrate
 
-1. Download the connector `.tgz` from [GitHub dist](https://github.com/dhn0x/FortiSOAR/tree/main/dist), then import it using **Content Hub → Manage → Add Connector**.
+1. Download the connector `.tgz` from [GitHub dist](https://github.com/dhn0x/FortiSOAR/tree/main/CONNECTORS/CYBERARK/dist), then import it using **Content Hub → Manage → Add Connector**.
 2. Prepare a dedicated CyberArk automation service user. For ISPSS client-credentials authentication, enable **Is OAuth confidential client** and use an approved policy permitting that flow. Keep human-user MFA policies in place.
 3. Grant access to the required safes and only the permissions needed by your playbooks. For lookup/retrieval, start with List Accounts and Retrieve Accounts.
 4. Create a connector configuration. Set Server URL to your portal host, Identity Tenant URL to the actual Identity tenant host, and Privilege Cloud API URL to the API host. Use **host URLs only**; do not append API or token paths. The Identity tenant ID can differ from the portal subdomain.
@@ -26,8 +26,8 @@ In a test playbook, add a connector step, select **CyberArk Privilege Cloud (ISP
 
 Parameter names are case-sensitive. Legacy bundled playbooks need remapping from the older `cyberark` connector; they are reference examples rather than ready-to-run imports.
 
-[Full integration walkthrough and JSON input examples for all 32 actions](https://github.com/dhn0x/FortiSOAR/blob/main/connectors/cyberark-privilege-cloud-ispss/INTEGRATION_AND_ACTION_EXAMPLES.md)
+[Full integration walkthrough and JSON input examples for all 32 actions](https://github.com/dhn0x/FortiSOAR/blob/main/CONNECTORS/CYBERARK/INTEGRATION_AND_ACTION_EXAMPLES.md)
 
-[Action use cases](https://github.com/dhn0x/FortiSOAR/blob/main/connectors/cyberark-privilege-cloud-ispss/ACTIONS_AND_USE_CASES.md) · [Configuration reference](https://github.com/dhn0x/FortiSOAR/blob/main/connectors/cyberark-privilege-cloud-ispss/DOCUMENTATION.md)
+[Action use cases](https://github.com/dhn0x/FortiSOAR/blob/main/CONNECTORS/CYBERARK/ACTIONS_AND_USE_CASES.md) · [Configuration reference](https://github.com/dhn0x/FortiSOAR/blob/main/CONNECTORS/CYBERARK/DOCUMENTATION.md)
 
 This is a community connector, not an official CyberArk or Fortinet product. Examples require validation in your own FortiSOAR/CyberArk environment.

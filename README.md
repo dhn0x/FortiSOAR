@@ -21,6 +21,10 @@ The connector requires the FortiSOAR connector SDK and an authorized CyberArk te
 
 This is a community project and is not an official CyberArk or Fortinet product. CyberArk and Fortinet names and logos belong to their respective owners.
 
+## Claude Skill — FortiSOAR Playbook Engineering
+
+A Claude skill for designing, building, reviewing, debugging and upgrading FortiSOAR playbooks to SOAR Framework standards. See [SKILLS/fortisoar-playbook-engineering](SKILLS/fortisoar-playbook-engineering/README.md).
+
 ## Author and license
 
 Created by **dhaneshwar ([@dhn0x](https://github.com/dhn0x))**. Licensed under the [MIT License](LICENSE). Third-party names and logos remain the property of their respective owners.
